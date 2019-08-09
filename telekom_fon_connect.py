@@ -91,10 +91,16 @@ def initialize_logger(level, log_file, args):
 def reset_http_debug_out(http_log):
     # Remember to reset sys.stdout!
     sys.stdout = sys.__stdout__
-    debug_info = ''.join(http_log.content).replace('\\r', '').decode('string_escape').replace('\'', '')
+    debug_info = ''.join(
+        http_log.content).replace(
+        '\\r',
+        '').decode('string_escape').replace(
+            '\'',
+        '')
 
     # Remove empty lines and print in Debug Channel
-    logging.debug("\n".join([ll.rstrip() for ll in debug_info.splitlines() if ll.strip()]))
+    logging.debug("\n".join([ll.rstrip()
+                             for ll in debug_info.splitlines() if ll.strip()]))
 
 
 # Return Stuff save response code also to check if success !
@@ -534,7 +540,8 @@ def main():
                               action='remove')
         # We are online because we got 301 redirect to https
         # (with correct location)
-        elif online_request['rsp_code'] == 301 and online_request['rsp_content'] == test_url.replace("http", "https") + '/':
+        elif online_request['rsp_code'] == 301 and online_request[
+                'rsp_content'] == test_url.replace("http", "https") + '/':
             logging.debug('You are online')
             # Set success to online
             status = 'online'
