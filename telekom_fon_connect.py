@@ -1,5 +1,6 @@
 #!/usr/bin/python
-# Imports ##
+# Imports
+
 # To parse arguments
 import argparse
 # Import logging module
@@ -205,7 +206,7 @@ def do_login(username,
              login_api_url,
              loglvl,
              login_url=None):
-    # START Do a request to get the Login URL and save session ##
+    # START Do a request to get the Login URL and save session
     if login_url is None:
         logging.info('Doing request to ' +
                      test_url +
@@ -241,7 +242,7 @@ def do_login(username,
     # END Do a request to get the Login URL
 
     # START Do reguest to login page to get source code
-    # and get post informations to post ##
+    # and get post informations to post
     logging.info('Doing request to hotspot login page to fetch source code')
     logging.debug('Doing request to ' +
                   login_url +
@@ -308,9 +309,9 @@ def do_login(username,
 
     logging.debug('Postdata created')
     # END Do reguest to Login page to get source code and
-    # get post informations to post ##
+    # get post informations to post
 
-    # START Starting login session at Telekom rest api ##
+    # START Starting login session at Telekom rest api
     # Build url to get session
     url = telekom_api_endpoint + session_api_url
     # Do post request to get session
@@ -336,9 +337,9 @@ def do_login(username,
     session = login_check['rsp_content']
 
     logging.info('Session @ Telekom api successfull created')
-    # END Starting login session at Telekom rest api ##
+    # END Starting login session at Telekom rest api
 
-    # START Try to login with credentials @ Telekom fon hotspot ##
+    # START Try to login with credentials @ Telekom fon hotspot
     # Build url with session for login check
     url = telekom_api_endpoint + login_api_url + ';jsessionid=' + session
     # Create json with login credentials
@@ -370,9 +371,9 @@ def do_login(username,
     # Login url @ local router is given from telekom api after auth.
     # Save to do login
     login_url = dec_json['redirect']['url']
-    # END Try to login with credentials @ Telekom fon hotspot ##
+    # END Try to login with credentials @ Telekom fon hotspot
 
-    # START Login ##
+    # START Login
     # Do the final request to be online, ignore timeouts here
     online_status = do_request(url=login_url, note_timeout=False, level=loglvl)
 
@@ -423,7 +424,7 @@ def do_statusfile(statusfile, action='remove', test_url=None, loglvl=None):
 
 
 def main():
-    # START argument parser ##
+    # START argument parser
     parser = argparse.ArgumentParser(
         # Define help description
         description='This script check take care of your online status on a ' +
@@ -447,9 +448,9 @@ def main():
                         action='version',
                         version='%(prog)s 1.0')
     args = parser.parse_args()
-    # END argument parser ##
+    # END argument parser
 
-    # START lookup for arg or env var to load config ##
+    # START lookup for arg or env var to load config
     # Check if config argument is defined
     if args.config is not None:
         cfg_file = args.config
@@ -479,9 +480,9 @@ def main():
                       'please check path and syntax')
         logging.debug('Got error ' + str(e) + ' when loading config file')
         sys.exit(1)
-    # END lookup for arg or env var to load config ##
+    # END lookup for arg or env var to load config
 
-    # START Save infos out of config file in vars ##
+    # START Save infos out of config file in vars
     loglvl = Config.get('telekom_fon_connect', 'log_level')
     log_file = Config.get('telekom_fon_connect', 'log_file')
     username = Config.get('telekom_fon_connect', 'fon_username')
@@ -500,7 +501,7 @@ def main():
     if args.statusfile is True:
         # Save status file var for config
         statusfile = Config.get('telekom_fon_connect', 'status_file')
-    # END Save infos out of config file in vars ##
+    # END Save infos out of config file in vars
 
     # Start logging
     # Pass log level and log file path as arguments to logger setup
@@ -510,7 +511,7 @@ def main():
     logging.debug('Working with configfile: ' + cfg_file)
     logging.info('log_level is : ' + loglvl)
 
-    # START While Loop for online check ##
+    # START While Loop for online check
     # while forever
     run = True
 
@@ -587,7 +588,7 @@ def main():
                           ' before checking status again')
             # Sleep for n seconds before check status again
             time.sleep(float(sleeptime))
-    # END While Loop for online check ##
+    # END While Loop for online check
 
 
 if __name__ == '__main__':
